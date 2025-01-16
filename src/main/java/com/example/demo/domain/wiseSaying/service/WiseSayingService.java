@@ -1,14 +1,20 @@
 package com.example.demo.domain.wiseSaying.service;
 
 import com.example.demo.domain.wiseSaying.entity.WiseSaying;
-import org.springframework.stereotype.Component;
+import com.example.demo.domain.wiseSaying.repository.WiseSayingRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class WiseSayingService {
+
+    @Autowired
+    private WiseSayingRepository wiseSayingRepository;
 
     private List<WiseSaying> wiseSayingList;
     private int lastId;
@@ -49,5 +55,22 @@ public class WiseSayingService {
 
         wiseSayingList.add(wiseSaying);
         return wiseSaying;
+    }
+
+    public boolean deleteId(int id) {
+        return wiseSayingList.removeIf(w -> w.getId() == id);
+    }
+
+    public WiseSaying modify(int id, String content, String author) {
+        Optional<WiseSaying> opWiseSaying = getItem(id);
+
+        if(opWiseSaying.isEmpty()) {
+            throw new IllegalArgumentException("해당 id의 명언이 없습니다.");
+        }
+        WiseSaying wiseSaying = opWiseSaying.get();
+        wiseSaying.setContent(content);
+        wiseSaying.setAuthor(author);
+        return wiseSaying;
+
     }
 }
