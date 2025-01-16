@@ -35,7 +35,7 @@ public class WiseSayingController {
 
     @GetMapping("/wiseSayings/{id}/delete")
     public boolean deleteItem(@PathVariable int id) {
-        return wiseSayingService.deleteId(id);
+        return wiseSayingService.deleteById(id);
     }
 
     @GetMapping("/wiseSayings/{id}/modify")
